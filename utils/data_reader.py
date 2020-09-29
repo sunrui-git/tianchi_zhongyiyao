@@ -10,21 +10,23 @@ def save_word_dict(vocab, save_path):
             f.write("%s\t%d\n" % (w, i))
 
 
-def read_data(path_1, path_2, path_3):
-    with open(path_1, 'r', encoding='utf-8') as f1, \
-            open(path_2, 'r', encoding='utf-8') as f2, \
-            open(path_3, 'r', encoding='utf-8') as f3:
-        words = []
-        # print(f1)
-        for line in f1:
-            words = line.split()
-
-        for line in f2:
-            words += line.split(' ')
-
-        for line in f3:
-            words += line.split(' ')
-
+def read_data(path_1,path_2,path_3,path_4,path_5):
+    with open(path_1,'r',encoding='utf-8') as f1, \
+         open(path_2,'r',encoding='utf-8') as f2, \
+         open(path_3,'r',encoding='utf-8') as f3, \
+        open(path_4,'r',encoding='utf-8') as f4, \
+         open(path_5,'r',encoding='utf-8') as f5:
+                words = []
+                for line in f1:
+                    words = line.split(' ')
+                for line in f2:
+                    words += line.split(' ')
+                for line in f3:
+                    words += line.split(' ')
+                for line in f4:
+                    words += line.split(' ')
+                for line in f5:
+                    words += line.split(' ')
     return words
 
 
@@ -50,7 +52,6 @@ def build_vocab(items, sort=True, min_count=0, lower=False):
         # sort
         """
         按照字典里的词频进行排序，出现次数多的排在前面
-        your code(one line)
         """
         dic = sorted(dic.items(), key=lambda d : d[1], reverse=True)
         for i, item in enumerate(dic):
@@ -71,8 +72,10 @@ def build_vocab(items, sort=True, min_count=0, lower=False):
 
 
 if __name__ == '__main__':
-    lines = read_data('{}/datasets/train_set.seg_x.txt'.format(BASE_DIR),
-                      '{}/datasets/train_set.seg_y.txt'.format(BASE_DIR),
-                      '{}/datasets/test_set.seg_x.txt'.format(BASE_DIR))
+    lines = read_data('{}/datasets/train_texts.txt'.format(BASE_DIR),
+                      '{}/datasets/train_questions.txt'.format(BASE_DIR),
+                      '{}/datasets/train_answers.txt'.format(BASE_DIR),
+                      '{}/datasets/test_texts.txt'.format(BASE_DIR),
+                      '{}/datasets/test_answers.txt'.format(BASE_DIR))
     vocab, reverse_vocab = build_vocab(lines)
     save_word_dict(vocab, '{}/datasets/vocab.txt'.format(BASE_DIR))

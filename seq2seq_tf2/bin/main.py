@@ -51,14 +51,14 @@ def main():
     parser.add_argument("--seq2seq_model_dir", default='{}/ckpt/seq2seq'.format(BASE_DIR), help="Model folder")
     parser.add_argument("--pgn_model_dir", default='{}/ckpt/pgn'.format(BASE_DIR), help="Model folder")
     parser.add_argument("--model_path", help="Path to a specific model", default="", type=str)
-    parser.add_argument("--train_seg_x_dir", default='{}/datasets/train_set.seg_x.txt'.format(BASE_DIR), help="train_seg_x_dir")
-    parser.add_argument("--train_seg_y_dir", default='{}/datasets/train_set.seg_y.txt'.format(BASE_DIR), help="train_seg_y_dir")
-    parser.add_argument("--test_seg_x_dir", default='{}/datasets/test_set.seg_x.txt'.format(BASE_DIR), help="test_seg_x_dir")
+    parser.add_argument("--train_seg_x_dir", default='{}/datasets/train_seg_x.txt'.format(BASE_DIR), help="train_text_dir")
+    parser.add_argument("--train_seg_y_dir", default='{}/datasets/train_questions.txt'.format(BASE_DIR), help="train_answers_dir")
+    parser.add_argument("--test_seg_x_dir", default='{}/datasets/test_seg_x.txt'.format(BASE_DIR), help="train_questions_dir")
     parser.add_argument("--vocab_path", default='{}/datasets/vocab.txt'.format(BASE_DIR), help="Vocab path")
     parser.add_argument("--word2vec_output", default='{}/datasets/word2vec.txt'.format(BASE_DIR), help="Vocab path")
     parser.add_argument("--log_file", help="File in which to redirect console outputs", default="", type=str)
     parser.add_argument("--test_save_dir", default='{}/datasets/'.format(BASE_DIR), help="test_save_dir")
-    parser.add_argument("--test_x_dir", default='{}/datasets/AutoMaster_TestSet.csv'.format(BASE_DIR), help="test_x_dir")
+    parser.add_argument("--test_x_dir", default='{}/datasets/round1_test_0907.json'.format(BASE_DIR), help="test_x_dir")
 
     # others
     parser.add_argument("--steps_per_epoch", default=1300, help="max_train_steps", type=int)

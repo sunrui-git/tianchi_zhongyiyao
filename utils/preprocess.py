@@ -28,34 +28,17 @@ def remove_words(words_list):
     return words_list
 
 
-def parse_data(train_path, test_path):
-    train_df = pd.read_csv(train_path, encoding='utf-8')
-    train_df.dropna(subset=['Report'], how='any', inplace=True)
-    train_df.fillna('', inplace=True)
-    train_x = train_df.Question.str.cat(train_df.Dialogue)
-    print('train_x is ', len(train_x))
-    train_x = train_x.apply(preprocess_sentence)
-    print('train_x is ', len(train_x))
-    train_y = train_df.Report
-    print('train_y is ', len(train_y))
-    train_y = train_y.apply(preprocess_sentence)
-    print('train_y is ', len(train_y))
-    # if 'Report' in train_df.columns:
-    # train_y = train_df.Report
-    # print('train_y is ', len(train_y))
-
-    test_df = pd.read_csv(test_path, encoding='utf-8')
-    test_df.fillna('', inplace=True)
-    test_x = test_df.Question.str.cat(test_df.Dialogue)
-    test_x = test_x.apply(preprocess_sentence)
-    print('test_x is ', len(test_x))
-    test_y = []
-    # print('train_x is ', len(train_x))
-    # print('train_y is ', len(train_y))
-    # print('test_x is ', len(test_x))
-    train_x.to_csv('{}/datasets/train_set.seg_x.txt'.format(BASE_DIR), index=None, header=False)
-    train_y.to_csv('{}/datasets/train_set.seg_y.txt'.format(BASE_DIR), index=None, header=False)
-    test_x.to_csv('{}/datasets/test_set.seg_x.txt'.format(BASE_DIR), index=None, header=False)
+def parse_data(path):
+    data = pd.read_json(path, encoding='utf-8')
+    texts = data['text']
+    questions = []
+    answers = []
+    annotations = data['annotations']
+    for annotation in annotations:
+        for line in annotation:
+            questions.append(line['Q'])
+            answers.append(line['A'])
+    return texts, questions, answers
 
 
 def save_data(data_1, data_2, data_3, data_path_1, data_path_2, data_path_3, stop_words_path=''):
@@ -121,8 +104,14 @@ def preprocess_sentence(sentence):
 
 if __name__ == '__main__':
     # 需要更换成自己数据的存储地址
-    parse_data('{}/datasets/AutoMaster_TrainSet.csv'.format(BASE_DIR),
-               '{}/datasets/AutoMaster_TestSet.csv'.format(BASE_DIR))
+    train_texts, trian_questions, train_answers = parse_data('{}/datasets/round1_train_0907.json'.format(BASE_DIR))
+    test_texts, _, test_answers = parse_data('{}/datasets/round1_test_0907.json'.format(BASE_DIR))
+    train_texts.apply(preprocess_sentence).to_csv('{}/datasets/train_texts.txt'.format(BASE_DIR), index=None, header=False)
+    pd.Series(trian_questions).apply(preprocess_sentence).to_csv('{}/datasets/train_questions.txt'.format(BASE_DIR), index=None, header=False)
+    pd.Series(train_answers).apply(preprocess_sentence).to_csv('{}/datasets/train_answers.txt'.format(BASE_DIR), index=None, header=False)
+    pd.Series(test_texts).apply(preprocess_sentence).to_csv('{}/datasets/test_texts.txt'.format(BASE_DIR), index=None, header=False)
+    pd.Series(test_answers).apply(preprocess_sentence).to_csv('{}/datasets/test_answers.txt'.format(BASE_DIR), index=None, header=False)
+
     # save_data(train_list_src,
     #           train_list_trg,
     #           test_list_src,
